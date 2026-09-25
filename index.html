@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>متجر سوقي | Souqi Store</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Tajawal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            tajawal: ['Tajawal', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              dark: '#0b0f19',
+              card: 'rgba(21, 28, 44, 0.75)',
+              border: 'rgba(255, 255, 255, 0.08)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Dark Glassmorphism Styling */
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: #0b0f19;
+      color: #f8fafc;
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.05) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .glass-card {
+      background: rgba(21, 28, 44, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 12px 40px 0 rgba(99, 102, 241, 0.2);
+    }
+
+    .glass-header {
+      background: rgba(11, 15, 25, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glow-btn {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glow-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .glow-btn:hover::after {
+      opacity: 1;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0f19;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #6366f1;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Header: Static position (relative) to avoid overlapping content during scroll -->
+  <header class="glass-header relative z-10 py-5 px-4 sm:px-8">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-500 flex items-center justify-center text-white text-xl shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform duration-300">
+          <i class="fa-solid fa-store"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">متجر سوقي</h1>
+          <p class="text-xs text-slate-400 font-medium">سوق الحسابات واليوزرات المميزة</p>
+        </div>
+      </a>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12">
+
+    <!-- Category Filter Tabs directly below Header -->
+    <div class="mb-8 overflow-x-auto pb-2">
+      <div class="flex items-center gap-2 min-w-max">
+        <button onclick="filterCategory('all', this)" class="tab-btn active px-5 py-3 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30">
+          <i class="fa-solid fa-border-all"></i>
+          <span>الكل</span>
+        </button>
+        <button onclick="filterCategory('clash', this)" class="tab-btn px-5 py-3 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-slate-800/60 hover:bg-slate-700/60 text-slate-300 border border-white/5">
+          <i class="fa-solid fa-shield-halved text-amber-400"></i>
+          <span>حسابات كلاش اوف كلانس</span>
+        </button>
+        <button onclick="filterCategory('pubg', this)" class="tab-btn px-5 py-3 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-slate-800/60 hover:bg-slate-700/60 text-slate-300 border border-white/5">
+          <i class="fa-solid fa-crosshairs text-yellow-500"></i>
+          <span>حسابات ببجي موبايل</span>
+        </button>
+        <button onclick="filterCategory('instagram', this)" class="tab-btn px-5 py-3 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-slate-800/60 hover:bg-slate-700/60 text-slate-300 border border-white/5">
+          <i class="fa-brands fa-instagram text-pink-500"></i>
+          <span>حسابات انستغرام</span>
+        </button>
+        <button onclick="filterCategory('tiktok', this)" class="tab-btn px-5 py-3 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-slate-800/60 hover:bg-slate-700/60 text-slate-300 border border-white/5">
+          <i class="fa-brands fa-tiktok text-cyan-400"></i>
+          <span>حسابات تيك توك</span>
+        </button>
+        <button onclick="filterCategory('users', this)" class="tab-btn px-5 py-3 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-slate-800/60 hover:bg-slate-700/60 text-slate-300 border border-white/5">
+          <i class="fa-solid fa-at text-purple-400"></i>
+          <span>يوزرات جميع منصات</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Grid Cards Container -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- المنشور 1: كلاش اوف كلانس (صورة من المستودع id="post1" و src="post1.jpg") -->
+      <article class="post-card glass-card rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5" data-category="clash">
+        <div class="relative h-56 bg-slate-900 overflow-hidden group">
+          <span class="absolute top-3 right-3 z-20 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md text-xs font-bold text-amber-400 border border-amber-500/30">
+            <i class="fa-solid fa-shield-halved ml-1"></i> كلاش اوف كلانس
+          </span>
+          
+          <img 
+            id="post1" 
+            src="post1.jpg" 
+            alt="حساب كلاش تاون 16" 
+            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 800 450\' width=\'100%\' height=\'100%\' fill=\'none\'><rect width=\'100%\' height=\'100%\' fill=\'%231e1b4b\'/><text x=\'50%\' y=\'50%\' fill=\'%23fbbf24\' font-family=\'sans-serif\' font-size=\'28\' font-weight=\'bold\' text-anchor=\'middle\' dominant-baseline=\'middle\'>TOWN HALL 16 - post1.jpg</text></svg>'" 
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          >
+        </div>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-lg font-extrabold text-white mb-2">حساب كلاش تاون 16</h3>
+          <p class="text-sm text-slate-300 bg-black/30 p-3 rounded-xl border border-white/5 mb-5 flex-1 leading-relaxed">
+            حساب كلاش تاون 16 جدار ماكس مثل ما موضح بالصورة سكنات ملوك
+          </p>
+          <a href="https://t.me/mxvmm" target="_blank" rel="noopener noreferrer" class="glow-btn w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 hover:-translate-y-0.5 transition-all">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>شراء الحساب</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- المنشور 2: ببجي موبايل -->
+      <article class="post-card glass-card rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5" data-category="pubg">
+        <div class="relative h-56 bg-gradient-to-br from-amber-950 via-slate-900 to-yellow-950 flex flex-col items-center justify-center text-center p-4">
+          <span class="absolute top-3 right-3 z-20 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md text-xs font-bold text-yellow-500 border border-yellow-500/30">
+            <i class="fa-solid fa-crosshairs ml-1"></i> ببجي موبايل
+          </span>
+          <i class="fa-solid fa-crosshairs text-5xl text-yellow-500 mb-2 drop-shadow-lg"></i>
+          <span class="text-xl font-black text-white tracking-widest">PUBG MOBILE</span>
+          <span class="text-xs font-bold text-yellow-400/80 mt-1">ايدي مميز 61234567444</span>
+        </div>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-lg font-extrabold text-white mb-2">حساب ببجي كورية</h3>
+          <p class="text-sm text-slate-300 bg-black/30 p-3 rounded-xl border border-white/5 mb-5 flex-1 leading-relaxed">
+            حساب كورية بيه نوادر وايدي مميز 61234567444 واسلحة وسكنات مثكات
+          </p>
+          <a href="https://t.me/mxvmm" target="_blank" rel="noopener noreferrer" class="glow-btn w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 hover:-translate-y-0.5 transition-all">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>شراء الحساب</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- المنشور 3: انستغرام -->
+      <article class="post-card glass-card rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5" data-category="instagram">
+        <div class="relative h-56 bg-gradient-to-br from-purple-900 via-pink-900 to-rose-950 flex flex-col items-center justify-center text-center p-4">
+          <span class="absolute top-3 right-3 z-20 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md text-xs font-bold text-pink-400 border border-pink-500/30">
+            <i class="fa-brands fa-instagram ml-1"></i> انستغرام
+          </span>
+          <i class="fa-brands fa-instagram text-5xl text-pink-400 mb-2 drop-shadow-lg"></i>
+          <span class="text-xl font-black text-white tracking-widest">INSTAGRAM</span>
+          <span class="text-xs font-bold text-pink-300/80 mt-1">تاريخ إنشاء 2013</span>
+        </div>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-lg font-extrabold text-white mb-2">حساب انستا متابعين</h3>
+          <p class="text-sm text-slate-300 bg-black/30 p-3 rounded-xl border border-white/5 mb-5 flex-1 leading-relaxed">
+            حساب انستا اساسي بريد متابعين 4,100 تاريخ انشاء الحساب 2013
+          </p>
+          <a href="https://t.me/mxvmm" target="_blank" rel="noopener noreferrer" class="glow-btn w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 hover:-translate-y-0.5 transition-all">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>شراء الحساب</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- المنشور 4: تيك توك -->
+      <article class="post-card glass-card rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5" data-category="tiktok">
+        <div class="relative h-56 bg-gradient-to-br from-slate-950 via-neutral-900 to-cyan-950 flex flex-col items-center justify-center text-center p-4 border-b border-cyan-500/20">
+          <span class="absolute top-3 right-3 z-20 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md text-xs font-bold text-cyan-400 border border-cyan-500/30">
+            <i class="fa-brands fa-tiktok ml-1"></i> تيك توك
+          </span>
+          <i class="fa-brands fa-tiktok text-5xl text-cyan-400 mb-2 drop-shadow-lg"></i>
+          <span class="text-xl font-black text-white tracking-widest">TIKTOK LIVE</span>
+          <span class="text-xs font-bold text-cyan-300/80 mt-1">ميزة البث المباشر جاهزة</span>
+        </div>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-lg font-extrabold text-white mb-2">حساب تيك توك ميزة بث متاحة</h3>
+          <p class="text-sm text-slate-300 bg-black/30 p-3 rounded-xl border border-white/5 mb-5 flex-1 leading-relaxed">
+            حساب تيك توك 1000 متابع حقيقي ميزه بث متاحة تفاعل مقبول
+          </p>
+          <a href="https://t.me/mxvmm" target="_blank" rel="noopener noreferrer" class="glow-btn w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 hover:-translate-y-0.5 transition-all">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>شراء الحساب</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- المنشور 5: يوزر انستا شبه رباعي -->
+      <article class="post-card glass-card rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5" data-category="users">
+        <div class="relative h-56 bg-gradient-to-br from-indigo-950 via-slate-900 to-purple-950 flex flex-col items-center justify-center text-center p-4">
+          <span class="absolute top-3 right-3 z-20 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md text-xs font-bold text-purple-400 border border-purple-500/30">
+            <i class="fa-solid fa-at ml-1"></i> يوزرات المنصات
+          </span>
+          <div class="w-16 h-16 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center mb-2">
+            <i class="fa-solid fa-at text-3xl text-purple-400"></i>
+          </div>
+          <span class="text-2xl font-black text-purple-300 tracking-wider">swza_</span>
+          <span class="text-xs font-bold text-slate-400 mt-1">يوزر انستغرام مميز</span>
+        </div>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-lg font-extrabold text-white mb-2">يوزر انستا شبه رباعي</h3>
+          <p class="text-sm text-slate-300 bg-black/30 p-3 rounded-xl border border-white/5 mb-5 flex-1 leading-relaxed">
+            يوزر انستا شبه رباعي شارحة على السطر ناعم هذا هو swza_
+          </p>
+          <a href="https://t.me/mxvmm" target="_blank" rel="noopener noreferrer" class="glow-btn w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 hover:-translate-y-0.5 transition-all">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>شراء اليوزر</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- المنشور 6: يوزر تيك توك عربي -->
+      <article class="post-card glass-card rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5" data-category="users">
+        <div class="relative h-56 bg-gradient-to-br from-slate-900 via-teal-950 to-slate-950 flex flex-col items-center justify-center text-center p-4">
+          <span class="absolute top-3 right-3 z-20 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md text-xs font-bold text-teal-400 border border-teal-500/30">
+            <i class="fa-solid fa-at ml-1"></i> يوزرات المنصات
+          </span>
+          <div class="w-16 h-16 rounded-2xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-center mb-2">
+            <i class="fa-solid fa-user-ninja text-3xl text-teal-400"></i>
+          </div>
+          <span class="text-2xl font-black text-teal-300 tracking-wider">فيدرالي</span>
+          <span class="text-xs font-bold text-slate-400 mt-1">يوزر عربي أصلي 2019</span>
+        </div>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-lg font-extrabold text-white mb-2">يوزر تيك توك عربي</h3>
+          <p class="text-sm text-slate-300 bg-black/30 p-3 rounded-xl border border-white/5 mb-5 flex-1 leading-relaxed">
+            يوزر تيك توك عربي اسمه فيدرالي تاريخ انشاء 2019 اصلي ليس ثغرة
+          </p>
+          <a href="https://t.me/mxvmm" target="_blank" rel="noopener noreferrer" class="glow-btn w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 hover:-translate-y-0.5 transition-all">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>شراء اليوزر</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- المنشور 7: كلاش اوف كلانس -->
+      <article class="post-card glass-card rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5" data-category="clash">
+        <div class="relative h-56 bg-slate-900 overflow-hidden group">
+          <span class="absolute top-3 right-3 z-20 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md text-xs font-bold text-amber-400 border border-amber-500/30"><i class="fa-solid fa-shield-halved ml-1"></i> كلاش اوف كلانس</span>
+          <img id="post2" src="post2.jpg" alt="قرية كلاش اوف كلانس للبيع 🌟" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-lg font-extrabold text-white mb-2">قرية كلاش اوف كلانس للبيع 🌟</h3>
+          <p class="text-sm text-slate-300 bg-black/30 p-3 rounded-xl border border-white/5 mb-5 flex-1 leading-relaxed">بيت 13 ماكس مطورة 14<br>ربط #نضيف<br>سعر : 30$ ماستر - اسيا</p>
+          <a href="https://t.me/mxvmm" target="_blank" rel="noopener noreferrer" class="glow-btn w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 hover:-translate-y-0.5 transition-all"><i class="fa-solid fa-cart-shopping"></i><span>شراء الحساب</span></a>
+        </div>
+      </article>
+
+      <!-- المنشور 8: كلاش اوف كلانس -->
+      <article class="post-card glass-card rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5" data-category="clash">
+        <div class="relative h-56 bg-slate-900 overflow-hidden group">
+          <span class="absolute top-3 right-3 z-20 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md text-xs font-bold text-amber-400 border border-amber-500/30"><i class="fa-solid fa-shield-halved ml-1"></i> كلاش اوف كلانس</span>
+          <img id="post3" src="post3.jpg" alt="كـــلان كــلاش اوف كلانس 🌟" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-lg font-extrabold text-white mb-2">كـــلان كــلاش اوف كلانس 🌟</h3>
+          <p class="text-sm text-slate-300 bg-black/30 p-3 rounded-xl border border-white/5 mb-5 flex-1 leading-relaxed">مستوى 16 نضيف تفاعل عراقي<br>سعر : 30$ اسيا - ماستر</p>
+          <a href="https://t.me/mxvmm" target="_blank" rel="noopener noreferrer" class="glow-btn w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 hover:-translate-y-0.5 transition-all"><i class="fa-solid fa-cart-shopping"></i><span>شراء الحساب</span></a>
+        </div>
+      </article>
+
+      <!-- المنشور 9: كلاش اوف كلانس -->
+      <article class="post-card glass-card rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5" data-category="clash">
+        <div class="relative h-56 bg-slate-900 overflow-hidden group">
+          <span class="absolute top-3 right-3 z-20 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md text-xs font-bold text-amber-400 border border-amber-500/30"><i class="fa-solid fa-shield-halved ml-1"></i> كلاش اوف كلانس</span>
+          <img id="post4" src="post4.jpg" alt="قرية كلاش اوف كلانس للبيع 🌟" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-lg font-extrabold text-white mb-2">قرية كلاش اوف كلانس للبيع 🌟</h3>
+          <p class="text-sm text-slate-300 bg-black/30 p-3 rounded-xl border border-white/5 mb-5 flex-1 leading-relaxed">بيت 17 نص ماكس<br>ربط #نضيف<br>سعر : 75$ ماستر - اسيا</p>
+          <a href="https://t.me/mxvmm" target="_blank" rel="noopener noreferrer" class="glow-btn w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 hover:-translate-y-0.5 transition-all"><i class="fa-solid fa-cart-shopping"></i><span>شراء الحساب</span></a>
+        </div>
+      </article>
+
+      <!-- المنشور 10: كلاش اوف كلانس -->
+      <article class="post-card glass-card rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5" data-category="clash">
+        <div class="relative h-56 bg-slate-900 overflow-hidden group">
+          <span class="absolute top-3 right-3 z-20 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md text-xs font-bold text-amber-400 border border-amber-500/30"><i class="fa-solid fa-shield-halved ml-1"></i> كلاش اوف كلانس</span>
+          <img id="post5" src="post5.jpg" alt="قرية كلاش اوف كلانس للبيع 🌟" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-lg font-extrabold text-white mb-2">قرية كلاش اوف كلانس للبيع 🌟</h3>
+          <p class="text-sm text-slate-300 bg-black/30 p-3 rounded-xl border border-white/5 mb-5 flex-1 leading-relaxed">بيت 17 ماكس كامل<br>ربط #نضيف<br>سعر : 150$ ماستر - اسيا</p>
+          <a href="https://t.me/mxvmm" target="_blank" rel="noopener noreferrer" class="glow-btn w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 hover:-translate-y-0.5 transition-all"><i class="fa-solid fa-cart-shopping"></i><span>شراء الحساب</span></a>
+        </div>
+      </article>
+
+      <!-- المنشور 11: كلاش اوف كلانس -->
+      <article class="post-card glass-card rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5" data-category="clash">
+        <div class="relative h-56 bg-slate-900 overflow-hidden group">
+          <span class="absolute top-3 right-3 z-20 px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md text-xs font-bold text-amber-400 border border-amber-500/30"><i class="fa-solid fa-shield-halved ml-1"></i> كلاش اوف كلانس</span>
+          <img id="post6" src="post6.jpg" alt="قرية كلاش اوف كلانس للبيع 🌟" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        </div>
+        <div class="p-5 flex flex-col flex-1">
+          <h3 class="text-lg font-extrabold text-white mb-2">قرية كلاش اوف كلانس للبيع 🌟</h3>
+          <p class="text-sm text-slate-300 bg-black/30 p-3 rounded-xl border border-white/5 mb-5 flex-1 leading-relaxed">بيت 17 ماكس كامل<br>ربط #نضيف<br>سكنات ملوك ومظاهر<br>سعر : 150$ ماستر - اسيا</p>
+          <a href="https://t.me/mxvmm" target="_blank" rel="noopener noreferrer" class="glow-btn w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 hover:-translate-y-0.5 transition-all"><i class="fa-solid fa-cart-shopping"></i><span>شراء الحساب</span></a>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <!-- Footer containing Channel & Advertising side-by-side, and Rights ONLY -->
+  <footer class="mt-auto border-t border-white/10 bg-black/80 backdrop-blur-2xl py-10 px-4 sm:px-8">
+    <div class="max-w-7xl mx-auto flex flex-col gap-8">
+      
+      <!-- Side-by-Side Boxes: Channel & Advertising -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Box 1: Channel Box (مربع القناة الرسمية) -->
+        <div class="glass-card rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-sky-500/20">
+          <div class="flex items-center gap-3 text-center sm:text-right">
+            <div class="w-12 h-12 rounded-xl bg-sky-500/20 border border-sky-500/30 flex items-center justify-center text-sky-400 text-xl shrink-0">
+              <i class="fa-brands fa-telegram"></i>
+            </div>
+            <div>
+              <h4 class="text-white font-extrabold text-base">القناة الرسمية للمتجر</h4>
+              <p class="text-slate-400 text-xs mt-0.5">تابع أحدث العروض والمنتجات الحصرية أولاً بأول</p>
+            </div>
+          </div>
+          <a href="https://t.me/mxvmm" target="_blank" rel="noopener noreferrer" class="glow-btn w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-sky-500/20 hover:scale-105 transition-transform">
+            <i class="fa-brands fa-telegram"></i>
+            <span>الانضمام للقناة</span>
+          </a>
+        </div>
+
+        <!-- Box 2: Advertising Box (مربع الإعلان) -->
+        <div class="glass-card rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-indigo-500/20">
+          <div class="flex items-center gap-3 text-center sm:text-right">
+            <div class="w-12 h-12 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-xl shrink-0">
+              <i class="fa-solid fa-bullhorn"></i>
+            </div>
+            <div>
+              <h4 class="text-white font-extrabold text-base">تريد الإعلان في المتجر؟</h4>
+              <p class="text-slate-400 text-xs mt-0.5">تواصل معنا للوصول لآلاف المتابعين والمهتمين</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <a href="https://t.me/mxvmm" target="_blank" rel="noopener noreferrer" class="glow-btn flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-lg shadow-indigo-600/20 hover:scale-105 transition-transform">
+              <i class="fa-solid fa-bullhorn"></i>
+              <span>أعلن هنا</span>
+            </a>
+            <a href="https://t.me/mxvmm" target="_blank" rel="noopener noreferrer" class="glow-btn flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs sm:text-sm border border-white/10 flex items-center justify-center gap-1.5 transition-colors">
+              <i class="fa-paper-plane text-indigo-400"></i>
+              <span>تواصل للإعلان</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Copyright Text Only -->
+      <div class="pt-6 border-t border-white/5 text-center">
+        <p class="text-sm font-extrabold text-slate-300 tracking-wide">
+          جميع الحقوق محفوظة لدى باران
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    // Filtering logic for store categories
+    function filterCategory(category, buttonElement) {
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => {
+        btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg', 'shadow-indigo-600/30');
+        btn.classList.add('bg-slate-800/60', 'text-slate-300', 'border', 'border-white/5');
+      });
+
+      if (buttonElement) {
+        buttonElement.classList.remove('bg-slate-800/60', 'text-slate-300', 'border', 'border-white/5');
+        buttonElement.classList.add('bg-indigo-600', 'text-white', 'shadow-lg', 'shadow-indigo-600/30');
+      }
+
+      const cards = document.querySelectorAll('.post-card');
+      cards.forEach(card => {
+        const cardCategory = card.getAttribute('data-category');
+        if (category === 'all' || cardCategory === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
